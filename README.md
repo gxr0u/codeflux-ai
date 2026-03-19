@@ -1,139 +1,169 @@
 # ⚡ CodeFlux
 
-Agentic AI coding assistant powered by advanced RAG and context-aware reasoning.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![LLM: Groq](https://img.shields.io/badge/LLM-Groq-orange.svg)](https://groq.com/)
 
-CodeFlux is a production-style AI system that understands, debugs, and explains code using a retrieval-first architecture instead of relying purely on LLM memory.
+**CodeFlux** is a production-grade Agentic AI coding assistant powered by advanced RAG (Retrieval-Augmented Generation) and context-aware reasoning. 
 
-Unlike traditional copilots, CodeFlux ensures grounded, accurate, and structured responses by combining:
+Unlike traditional "autocomplete" copilots, CodeFlux functions as a reasoning engine. It understands, debugs, and explains code by prioritizing a **retrieval-first architecture**, ensuring responses are grounded in actual documentation rather than relying solely on LLM internal memory.
 
-- Hybrid Retrieval (FAISS + BM25 + Multi-Query)
-- Query Analysis & Dynamic Routing
-- Groq LLM (fast inference)
-- Context Compression & Reranking
-- Agentic Pipeline for reasoning
+---
 
---------------------------------------------------
+## 🚀 Key Features
 
-FEATURES
+* **Agentic Reasoning:** Uses a dynamic pipeline to analyze queries before execution.
+* **Hybrid Retrieval:** Combines **FAISS** (semantic search) and **BM25** (keyword search) with **Multi-Query expansion** for maximum recall.
+* **Grounded Responses:** Root-cause analysis for debugging with zero-hallucination guarantees via RAG.
+* **Context Optimization:** Features context compression and reranking to feed only the most relevant snippets to the LLM.
+* **Language Aware:** Specialized filtering for Python, JavaScript, and TypeScript.
+* **Modular Architecture:** Designed for production scalability with fallback mechanisms.
 
-- Debugs code with root-cause analysis
-- Uses grounded documentation (RAG) instead of hallucinating
-- Multi-query retrieval for better recall
-- Hybrid search (semantic + keyword)
-- Structured responses (Explanation / Fix / Example)
-- Language-aware filtering (Python, JS, TS)
-- Fallback mechanisms (no silent failures)
-- Production-style modular architecture
+---
 
---------------------------------------------------
+## 🏗️ Architecture
 
-ARCHITECTURE
+CodeFlux follows a sophisticated pipeline to ensure high-fidelity code generation and analysis:
 
-Query
- ↓
-Query Analyzer
- ↓
-Dynamic Pipeline Routing
- ↓
-Multi-Query + Hybrid Retrieval
- ↓
-Reranker + Deduplication
- ↓
-Context Compression
- ↓
-Prompt Builder
- ↓
-Groq LLM
- ↓
-Validated Response
+```mermaid
+graph TD
+    A[User Query] --> B[Query Analyzer]
+    B --> C{Dynamic Router}
+    C --> D[Multi-Query Generation]
+    D --> E[Hybrid Retrieval: FAISS + BM25]
+    E --> F[Reranker & Deduplication]
+    F --> G[Context Compression]
+    G --> H[Prompt Builder]
+    H --> I[Groq LLM Inference]
+    I --> J[Validated Response]
+```
+## 🛠️ Tech Stack
 
---------------------------------------------------
+* **Language:** Python
+* **Vector Database:** FAISS
+* **Embeddings:** Sentence Transformers (BGE models)
+* **Inference:** Groq (Llama-3 / Mixtral)
+* **Retrieval:** RankBM25 & Multi-Query Expansion
+* **Orchestration:** Custom Agentic Pipeline
 
-EXAMPLE
+---
 
-Input:
-why is my async code slow in python
+## 🚦 Getting Started
 
-Output:
+### Prerequisites
 
-Explanation
-- Root cause: Using time.sleep() inside an async function blocks the event loop.
+* Python 3.9 or higher
+* A Groq API Key
 
-Fix
-- Replace time.sleep() with await asyncio.sleep()
+### Installation
 
-Example
-import asyncio
-async def foo():
-    await asyncio.sleep(1)
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/your-username/codeflux-ai](https://github.com/your-username/codeflux-ai)
+   cd codeflux-ai
+   ```
+2. **Setup virtual environment:**
+   ```bash
+   # Windows
+   python -m venv .venv
+   .venv\Scripts\activate
+   
+   # Mac/Linux
+   python -m venv .venv
+   source .venv/bin/activate
+   ```
+3. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
---------------------------------------------------
+### Configuration
 
-SETUP
-
-git clone https://github.com/your-username/codeflux-ai
-cd codeflux-ai
-
-python -m venv .venv
-.venv\Scripts\activate   (Windows)
-or
-source .venv/bin/activate   (Mac/Linux)
-
-pip install -r requirements.txt
-
---------------------------------------------------
-
-ENVIRONMENT VARIABLES
-
-Create a .env file:
+Create a .env file in the root directory and add your API credentials:
 
 GROQ_API_KEY=your_api_key_here
 
---------------------------------------------------
+### 1. Ingest Documentation
 
-INGEST DOCUMENTATION
+Prepare your local knowledge base by indexing documentation:
 
 python -m app.rag.ingest
 
---------------------------------------------------
+### 2. Run the Pipeline
 
-RUN
+Test the assistant with a query:
 
 python -m app.test_pipeline
 
---------------------------------------------------
 
-TECH STACK
+## 📝 Example Output
 
-- Python
-- FAISS
-- Sentence Transformers (BGE embeddings)
-- Groq (LLM inference)
-- Custom RAG pipeline
+**Input:** > "Why is my async code slow in Python?"
 
---------------------------------------------------
+**Output:**
 
-FUTURE WORK
+### 🔍 Explanation
+**Root Cause:** You are likely using time.sleep() inside an async function. This is a blocking call that halts the entire event loop, preventing other tasks from running.
 
-- FastAPI backend
-- React + Monaco editor frontend
-- Multi-turn memory
-- Observability & tracing
-- Deployment (Docker + cloud)
+### ✅ Fix
+Replace the synchronous time.sleep(n) with await asyncio.sleep(n).
 
---------------------------------------------------
+### 💻 Code Example
+import asyncio
 
-WHY CODEFLUX?
+async def foo():
+    # Non-blocking sleep
+    await asyncio.sleep(1)
 
-Most AI coding tools rely heavily on LLM memory.
 
-CodeFlux is different:
-- It retrieves first, generates second
-- It forces grounding
-- It behaves like a reasoning system, not just autocomplete
 
---------------------------------------------------
+## 📈 Roadmap
 
-AUTHOR
+- [ ] **Backend:** FastAPI integration for RESTful access.
+- [ ] **Frontend:** React-based UI featuring the Monaco Editor.
+- [ ] **Memory:** Implementation of multi-turn conversation memory.
+- [ ] **DevOps:** Dockerization and CI/CD cloud deployment.
+- [ ] **Observability:** Integrated tracing (LangSmith/Arize).
 
-Aditya Verma
+## 💡 Why CodeFlux?
+
+Most AI coding tools are "black boxes" that guess the next token. **CodeFlux is different.** It behaves like a senior engineer:
+
+1. It **retrieves** relevant context first.
+2. It **reasons** about the specific environment.
+3. It **generates** code only after grounding itself in facts.
+
+## 👨‍💻 Author
+
+**Aditya Verma**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
