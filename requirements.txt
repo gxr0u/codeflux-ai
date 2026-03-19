@@ -1,0 +1,8 @@
+faiss-cpu
+numpy
+sentence-transformers
+rank-bm25
+groq
+python-dotenv
+scikit-learn
+tqdm
